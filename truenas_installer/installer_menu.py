@@ -111,10 +111,11 @@ class InstallerMenu:
         if vendor == "HexOS":
             authentication_method = await self._authentication_truenas_admin()
         else:
+            username = f"{self.installer.vendor.lower()}_admin"
             authentication_method = await dialog_menu(
                 "Web UI Authentication Method",
                 {
-                    "Administrative user (truenas_admin)": self._authentication_truenas_admin,
+                    f"Administrative user ({username})": self._authentication_truenas_admin,
                     "Configure using Web UI": self._authentication_webui,
                 }
             )
@@ -162,9 +163,10 @@ class InstallerMenu:
         return [disks_dict[disk_name] for disk_name in disks_names]
 
     async def _authentication_truenas_admin(self):
+        username = f"{self.installer.vendor.lower()}_admin"
         return await self._authentication_password(
-            "truenas_admin",
-            "Enter your \"truenas_admin\" user password. Root password login will be disabled.",
+            username,
+            f"Enter your \"{username}\" user password. Root password login will be disabled.",
         )
 
     async def _authentication_password(self, username, title):
